@@ -1,11 +1,11 @@
-const express=require("express")
+const express=require("express")//remember in json add  "node app.js", install dotenv and require('dotenv').config()
 const app=express();
 const https = require("https");
 const bodyParser=require("body-parser")
 const request=require("request")
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.static("public"))//we need to set the path relative to the public folder.
-
+const dotenv=require('dotenv').config();
 app.get("/",function(request,response)
 {
     response.sendFile(__dirname+"/sign-up.html")
@@ -24,12 +24,12 @@ app.post("/",function(request,response)
         }
 
     }] }
-
+  
     const jsondata=JSON.stringify(data);
-    const url="https://us12.api.mailchimp.com/3.0/lists/7645343289";
+    const url=process.env.audienceID;
     const options={
         method:"POST",
-        auth:"krishnendu:dcf82d6aa3e94b408f0cf7f3d7bd0cdd-us12"
+        auth:process.env.apiID
     }
     const req=https.request(url,options,function(res)
     {
@@ -61,4 +61,3 @@ app.listen(process.env.PORT || 3000,function()//dynamic port
 
 
 
-//audience id  7645343289
